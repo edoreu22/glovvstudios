@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GLOVV Studios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,700;1,800&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============ 1. EDIT YOUR COLORS + FONTS HERE ============ */
+:root{
+  --ink:#0E0A1F;        /* page background */
+  --panel:#1A1338;      /* card background */
+  --text:#F1EBFF;       /* main text */
+  --muted:#B5A8DB;      /* secondary text */
+  --a:#B6FF3C;          /* accent 1: neon lime (buttons, highlights) */
+  --b:#8B3DFF;          /* accent 2: electric violet */
+  --c:#6BFF9E;          /* accent 3: mint green (hovers, tags) */
+  --display:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
+  --body:"Barlow",system-ui,sans-serif;
+}
+/* ========================================================== */
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font:400 18px/1.6 var(--body);overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--c);outline-offset:3px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+
+/* nav */
+nav{position:fixed;inset:0 0 auto;z-index:10;background:rgba(14,10,31,.8);backdrop-filter:blur(10px)}
+nav .wrap{display:flex;justify-content:space-between;align-items:center;height:64px}
+.logo{font:italic 800 28px var(--display);letter-spacing:.02em}
+.v{color:var(--a)}
+nav ul{display:flex;gap:28px;list-style:none;padding:0}
+nav ul a{color:var(--muted);font-weight:500}
+nav ul a:hover{color:var(--text)}
+
+/* hero */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:110px 0 72px;isolation:isolate}
+.hero .wrap{display:flex;justify-content:center;width:100%}
+.hero-inner{width:fit-content;max-width:100%;text-align:left}
+.hero::before{content:"";position:absolute;inset:0;z-index:-2;
+  background:radial-gradient(60% 70% at 78% 30%,rgba(139,61,255,.5),transparent 70%),
+             radial-gradient(40% 50% at 95% 80%,rgba(139,61,255,.3),transparent 70%)}
+.hero::after{content:"";position:absolute;top:0;bottom:0;right:18%;width:90px;z-index:-1;
+  background:linear-gradient(#C79BFF,var(--b));transform:skewX(-18deg);opacity:.9;box-shadow:0 0 50px rgba(139,61,255,.6),0 0 110px rgba(139,61,255,.4)}
+.hero-img{position:absolute;inset:0;z-index:-1;width:100%;height:100%;object-fit:cover;opacity:.55}
+h1{font:italic 800 clamp(64px,13vw,190px)/.88 var(--display);text-transform:uppercase;letter-spacing:-.01em;
+  text-shadow:6px 6px 0 var(--b),0 0 44px rgba(139,61,255,.6)}
+.hero .studios{font:italic 700 clamp(18px,2.4vw,30px)/1 var(--display);text-transform:uppercase;letter-spacing:.34em;color:var(--muted);margin:14px 0 0 .15em}
+.hero .lead{font:italic 700 clamp(16px,2vw,24px)/1.1 var(--display);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;margin:30px 0 12px;color:var(--text)}
+.hero .sub{max-width:38ch;margin:0 0 34px;color:var(--muted);font-size:19px}
+
+/* hero bars: three small bars, hovered one expands, icon fades to word */
+.tabs{display:flex;gap:10px;width:min(380px,100%)}
+.gl{display:block;flex:1 1 0;min-width:0;filter:drop-shadow(0 0 14px var(--g));transition:flex-grow .55s var(--snap)}
+.gl:hover,.gl:focus-within{flex-grow:2.4}
+.bar{position:relative;display:block;height:54px;background:var(--a);color:var(--ink);
+  clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%);transition:background .25s,color .25s}
+.bar.alt{background:var(--b);color:var(--text)}
+.bar.alt2{background:#2a1f5c;color:var(--text)}
+.bar:hover,.bar:focus-visible{background:var(--c);color:var(--ink)}
+.bar .ico,.bar .word{position:absolute;inset:0;margin:auto}
+.bar .ico{width:26px;height:26px;opacity:1;transition:opacity .25s ease}
+.bar .word{display:flex;align-items:center;justify-content:center;opacity:0;
+  font:italic 700 22px var(--display);text-transform:uppercase;transition:opacity .3s ease}
+.gl:hover .ico,.gl:focus-within .ico{opacity:0}
+.gl:hover .word,.gl:focus-within .word{opacity:1;transition-delay:.15s}
+@media(hover:none){
+  .bar .ico{opacity:0}.bar .word{opacity:1;font-size:19px}
+}
+
+/* buttons: angled corners */
+.btn{display:inline-block;padding:14px 34px;font:italic 700 22px var(--display);text-transform:uppercase;
+  background:var(--a);color:var(--ink);clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%);transition:background .2s,transform .2s}
+.btn:hover{background:var(--c);color:var(--ink);transform:translateX(4px)}
+
+/* ---- opening animation ---- */
+@keyframes slideIn{from{opacity:0;transform:translateX(-90px)}to{opacity:1;transform:none}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:none}}
+@keyframes slash{from{opacity:0;transform:translateX(70vw) skewX(-18deg)}to{opacity:.9;transform:skewX(-18deg)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(80px)}to{opacity:1;transform:none}}
+:root{--snap:cubic-bezier(.16,1,.3,1)}
+nav{animation:slideDown .6s var(--snap) both}
+.hero::after{animation:slash .9s var(--snap) .05s both}
+.hero h1{animation:slideIn .8s var(--snap) .15s both}
+.hero .studios{animation:slideIn .8s var(--snap) .22s both}
+.hero .lead{animation:slideIn .8s var(--snap) .3s both}
+.hero .sub{animation:slideIn .8s var(--snap) .4s both}
+.tabs .gl{animation:slideIn .7s var(--snap) both}
+.tabs .gl:nth-child(1){animation-delay:.55s}
+.tabs .gl:nth-child(2){animation-delay:.65s}
+.tabs .gl:nth-child(3){animation-delay:.75s}
+
+/* ---- scroll reveal: slide/fade in, fade out near edges ---- */
+.js .reveal{opacity:0;transform:translateY(70px);
+  transition:opacity .45s ease,transform .6s var(--snap),box-shadow .3s}
+.js .reveal.above{transform:translateY(-40px)}
+.js .reveal.left,.js .reveal.left.above{transform:translateX(-80px)}
+.js .reveal.in{opacity:1;transform:none;
+  transition:opacity .6s ease calc(var(--i,0) * 100ms),transform .8s var(--snap) calc(var(--i,0) * 100ms),box-shadow .3s}
+.js .card.reveal.in:hover{transform:translateY(-6px);box-shadow:inset 0 0 0 1px #B98CFF,inset 0 0 32px rgba(139,61,255,.3);transition-delay:0s}
+.js .btn.reveal{transition:opacity .45s ease,transform .6s var(--snap),background .2s}
+.js .btn.reveal.in{transition:opacity .6s ease calc(var(--i,0) * 100ms),transform .8s var(--snap) calc(var(--i,0) * 100ms),background .2s}
+
+/* sections */
+section{padding:104px 0}
+h2{font:italic 800 clamp(40px,6vw,76px)/1 var(--display);text-transform:uppercase;margin-bottom:48px}
+h2.sub{font-size:clamp(32px,4.2vw,52px);margin:80px 0 28px}
+h2.sub.first{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px}
+.card{background:var(--panel);box-shadow:inset 0 0 0 1px rgba(139,61,255,.55),inset 0 0 28px rgba(139,61,255,.12);clip-path:polygon(0 0,calc(100% - 28px) 0,100% 28px,100% 100%,0 100%);transition:transform .25s}
+.card:hover{transform:translateY(-6px);box-shadow:inset 0 0 0 1px #B98CFF,inset 0 0 32px rgba(139,61,255,.3)}
+.shot{position:relative;aspect-ratio:16/10;background:linear-gradient(135deg,var(--b),#1f1650);overflow:hidden}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card div.t{padding:22px 24px 28px}
+.card h3{font:italic 700 32px/1 var(--display);text-transform:uppercase}
+.card p{color:var(--muted);margin-top:8px;font-size:16px}
+.status{display:inline-block;margin-top:14px;padding:2px 12px;background:var(--c);color:var(--ink);font-weight:500;font-size:14px;
+  clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+
+/* projects header + filter */
+[hidden]{display:none!important}
+.head{display:flex;align-items:center;flex-wrap:wrap;gap:12px 36px;margin-bottom:48px}
+.head h2{margin-bottom:0}
+.filters{display:flex;flex-wrap:wrap;gap:10px}
+.filters button{font:italic 700 18px/1 var(--display);text-transform:uppercase;letter-spacing:.03em;cursor:pointer;
+  padding:10px 24px;border:0;background:#2a1f5c;color:var(--muted);
+  clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);transition:background .2s,color .2s,transform .2s}
+.filters button:hover{background:var(--b);color:var(--text)}
+.filters button[aria-pressed="true"]{background:var(--a);color:var(--ink)}
+.filters button:disabled{background:#1b1735;color:#5f5888;cursor:not-allowed;transform:none}
+
+/* content cards: solid purple so they read as a different kind of project */
+.card.content{background:linear-gradient(160deg,#4a1fb0,#25125f);box-shadow:inset 0 0 0 1px #A774FF,inset 0 0 30px rgba(199,155,255,.2)}
+.card.content:hover,.js .card.content.reveal.in:hover{box-shadow:inset 0 0 0 1px #D9C2FF,inset 0 0 36px rgba(199,155,255,.32)}
+.card.content .shot{background:linear-gradient(135deg,#A774FF,#3b1a8a)}
+.card.content p{color:#DCCCFF}
+.card.content .status{background:#C79BFF}
+a.status:hover{background:var(--a)}
+.card.content a.status:hover{background:var(--a)}
+
+/* about */
+.about{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center}
+.about .shot{aspect-ratio:4/5;clip-path:polygon(0 0,100% 0,100% calc(100% - 40px),calc(100% - 40px) 100%,0 100%)}
+.about p{color:var(--muted);max-width:52ch}
+.about p+p{margin-top:16px}
+
+/* team */
+.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,300px));gap:28px}
+.person .shot{aspect-ratio:4/3}
+.person h3{font-size:30px}
+.card p.user{margin-top:6px;font-weight:500;font-size:18px;width:fit-content;
+  background:linear-gradient(90deg,var(--a),var(--c));-webkit-background-clip:text;background-clip:text;
+  color:transparent;-webkit-text-fill-color:transparent}
+.partner{max-width:300px}
+.partner .t{padding:26px 24px}
+.partner p.user{margin-top:0;font:italic 700 34px/1 var(--display);text-transform:uppercase}
+
+/* contact */
+.contact{color:var(--ink);background:linear-gradient(100deg,var(--a),var(--c));clip-path:polygon(0 40px,100% 0,100% 100%,0 100%)}
+.contact .wrap{padding-top:40px}
+.contact .btn{background:var(--ink);color:var(--text);overflow-wrap:anywhere}
+.contact .btn:hover{background:var(--text);color:var(--ink)}
+footer{padding:28px 0;color:var(--muted);font-size:15px;background:var(--a);color:var(--ink)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer .legal{flex-basis:100%;font-size:13px;opacity:.8}
+
+@media(max-width:760px){
+  nav ul{gap:16px;font-size:16px}
+  .about{grid-template-columns:1fr}
+  .hero::after{right:8%;width:50px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.js .reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="logo" href="#top">GL<span class="v">O</span>VV</a>  <!-- EDIT: or swap for <img src="assets/logo.svg" height="32" alt="GLOVV Studios"> -->
+  <ul>
+    <li><a href="#games">Projects</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</div></nav>
+
+<!-- ============ 2. HERO ============ -->
+<header class="hero" id="top">
+  <!-- IMAGE SLOT: drop your art at assets/hero.jpg. If missing, the gradient shows instead. -->
+  <img class="hero-img" src="assets/hero.jpg" alt="" onerror="this.remove()">
+  <div class="wrap">
+    <div class="hero-inner">
+      <h1>GL<span class="v">O</span>VV</h1>
+      <p class="studios">Studios</p>
+      <p class="lead">Helping creators make experiences.</p>
+      <p class="sub">We make videogames, scripts, and content: raw material for creators to build on, remix, and make their own.</p>
+      <!-- three bars: icon fades to the word on hover -->
+      <div class="tabs">
+        <span class="gl" style="--g:rgba(182,255,60,.45)"><a class="bar" href="#games" aria-label="Projects">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 10.5v4M5 12.5h4"/><path d="M16 11h.01M18.5 14h.01"/></svg>
+          <span class="word" aria-hidden="true">Projects</span></a></span>
+        <span class="gl" style="--g:rgba(139,61,255,.65)"><a class="bar alt" href="#team" aria-label="Team">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.7a3.5 3.5 0 0 1 0 6.6M18 14.3c2.2.7 3.5 2.6 3.5 5.7"/></svg>
+          <span class="word" aria-hidden="true">Team</span></a></span>
+        <span class="gl" style="--g:rgba(139,61,255,.45)"><a class="bar alt2" href="#contact" aria-label="Contact">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          <span class="word" aria-hidden="true">Contact</span></a></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 3. PROJECTS ============
+     Each card has data-cat="games" or "content". The buttons filter by that value.
+     Nothing selected = show everything. To enable Visuals later: remove "disabled" from its button
+     and add cards with data-cat="visuals". -->
+<section id="games"><div class="wrap">
+  <div class="head">
+    <h2 class="reveal left">Projects</h2>
+    <div class="filters reveal" role="group" aria-label="Filter projects">
+      <button type="button" data-filter="games" aria-pressed="false">Games</button>
+      <button type="button" data-filter="content" aria-pressed="false">Content</button>
+      <button type="button" data-filter="visuals" disabled title="Coming soon">Visuals</button>
+    </div>
+  </div>
+  <div class="grid">
+    <article class="card reveal" data-cat="games">
+      <div class="shot"><img src="assets/pokemon-void.png" alt="Pokémon Void title screen" onerror="this.remove()"></div>
+      <div class="t"><h3>Pokémon Void</h3><p>A free fan game set in the Pokémon universe, featuring 100% original Fakémon designed from PokedexFillers videos.</p><span class="status">Free fan game</span></div>
+    </article>
+    <article class="card reveal" data-cat="games">
+      <div class="shot"><img src="assets/pokemon-void-conduit.jpg" alt="Pokémon Void: Conduit screenshot" onerror="this.remove()"></div>
+      <div class="t"><h3>Pokémon Void: Conduit</h3><p>A free fan game and short prequel to Void, also with 100% original Fakémon. Play a roguelike run as a member of the villainous team, stealing Pokémon.</p><span class="status">Free fan game</span></div>
+    </article>
+    <article class="card reveal" data-cat="games">
+      <div class="shot"><img src="assets/rainburst.jpg" alt="Rainburst! screenshot" onerror="this.remove()"></div>
+      <div class="t"><h3>Rainburst!</h3><p>A card-based action roguelike. Your cards define your animations and moves in real time, instead of turn-based play.</p><span class="status">Action roguelike</span></div>
+    </article>
+    <article class="card content reveal" data-cat="content">
+      <div class="shot"><img src="assets/scriptwriting.jpg" alt="Scriptwriting and research" onerror="this.remove()"></div>
+      <div class="t"><h3>Scriptwriting &amp; Research</h3><p>Send us your script. We'll pitch ideas, research comparable properties to add depth, and reach out to test how engaging it is.</p><a class="status" href="#contact">Send a script</a></div>
+    </article>
+    <article class="card content reveal" data-cat="content">
+      <div class="shot"><img src="assets/concept-design.jpg" alt="Concept design" onerror="this.remove()"></div>
+      <div class="t"><h3>Concept Design</h3><p>Need help visualizing something? Got a videogame idea? Contact us.</p><a class="status" href="#contact">Contact us</a></div>
+    </article>
+  </div>
+</div></section>
+
+<!-- ============ 4. ABOUT ============ -->
+<section id="about"><div class="wrap about">
+  <div>
+    <h2 class="reveal left">Who we are</h2>
+    <p class="reveal">GLOVV Studios is a small indie team and the main developers behind Pokémon Void. It all started with a dream from YouTuber PokedexFillers. Through our partnership, we helped create the free fan experience Pokémon Void, and it's the first of many projects to come.</p>
+    <p class="reveal">We're planning more than fan games. We're also pursuing games from other creators, helping their ideas become finished experiences.</p>
+  </div>
+  <div class="shot reveal"><img src="assets/team.jpg" alt="The GLOVV Studios team" onerror="this.remove()"></div>
+</div></section>
+
+<!-- ============ TEAM: Directors, Team, Partners ============ -->
+<!-- Copy a <div class="card person reveal"> block to add a person. Lines: name, title, title, @username -->
+<section id="team"><div class="wrap">
+  <h2 class="sub first reveal left">Directors</h2>
+  <div class="people">
+    <div class="card person reveal">
+      <div class="shot"><img src="assets/ed.jpg" alt="Edward Gopez" onerror="this.remove()"></div>
+      <div class="t"><h3>Edward Gopez</h3><p>Lead Project Manager</p><p>Lead Creative Media Director</p><p class="user">@ed</p></div>
+    </div>
+    <div class="card person reveal">
+      <div class="shot"><img src="assets/jazz.jpg" alt="Juliana Guillermo" onerror="this.remove()"></div>
+      <div class="t"><h3>Juliana Guillermo</h3><p>Project Manager</p><p>Lead Programming Director</p><p class="user">@jazz</p></div>
+    </div>
+  </div>
+
+  <h2 class="sub reveal left">Team</h2>
+  <div class="people">
+    <div class="card person reveal">
+      <div class="shot"><img src="assets/team1.jpg" alt="Team member" onerror="this.remove()"></div>
+      <div class="t"><h3>Name</h3><p>Title</p><p>Title</p><p class="user">@username</p></div>
+    </div>
+    <div class="card person reveal">
+      <div class="shot"><img src="assets/team2.jpg" alt="Team member" onerror="this.remove()"></div>
+      <div class="t"><h3>Name</h3><p>Title</p><p>Title</p><p class="user">@username</p></div>
+    </div>
+  </div>
+
+  <h2 class="sub reveal left">Partners</h2>
+  <div class="people">
+    <div class="card partner reveal"><div class="t"><p class="user">PokedexFillers!</p></div></div>
+  </div>
+</div></section>
+
+<!-- ============ 5. CONTACT ============ -->
+<section class="contact" id="contact"><div class="wrap">
+  <h2 class="reveal left">Say hello</h2>
+  <p class="reveal" style="margin-bottom:32px;max-width:40ch">Press, feedback, or collabs: email us and we'll get back to you.</p>
+  <a class="btn reveal" href="mailto:pkmnvoiddevteam@gmail.com">pkmnvoiddevteam@gmail.com</a>
+</div></section>
+
+<footer><div class="wrap">
+  <span>© 2026 GLOVV Studios</span>
+  <span><a href="#">Discord</a> &nbsp; <a href="#">X</a> &nbsp; <a href="#">YouTube</a></span>
+  <span class="legal">Pokémon is a trademark of Nintendo, Creatures Inc., and GAME FREAK inc. Pokémon Void and Pokémon Void: Conduit are unofficial, free fan projects.</span>
+</div></footer>
+
+<script>
+document.documentElement.classList.add("js");
+(function(){
+  var items=document.querySelectorAll(".reveal");
+  // stagger: index among reveal-siblings in the same parent (max 4)
+  items.forEach(function(el){
+    var i=0,n=el.previousElementSibling;
+    while(n){if(n.classList.contains("reveal"))i++;n=n.previousElementSibling}
+    el.style.setProperty("--i",Math.min(i,4));
+  });
+  if(!("IntersectionObserver" in window)){items.forEach(function(e){e.classList.add("in")});return;}
+  // the shrunken zone makes things fade out as they near the edges
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      var t=e.target;
+      if(e.isIntersecting){t.classList.remove("above");t.classList.add("in")}
+      else{t.classList.toggle("above",e.boundingClientRect.top<0);t.classList.remove("in")}
+    });
+  },{rootMargin:"-10% 0px -8% 0px",threshold:0});
+  items.forEach(function(e){io.observe(e)});
+
+  // hero fades and drifts away as you scroll down
+  var hero=document.querySelector(".hero-inner"),tick=false;
+  if(!matchMedia("(prefers-reduced-motion:reduce)").matches){
+    addEventListener("scroll",function(){
+      if(tick)return;tick=true;
+      requestAnimationFrame(function(){
+        var k=Math.min(1,scrollY/(innerHeight*.6));
+        hero.style.opacity=1-k;hero.style.transform="translateY("+(-60*k)+"px)";tick=false;
+      });
+    },{passive:true});
+  }
+})();
+</script>
+<script>
+// Projects filter: nothing selected = show all; selected buttons = show only those categories
+(function(){
+  var btns=document.querySelectorAll(".filters button[data-filter]:not([disabled])");
+  var cards=document.querySelectorAll("#games .card[data-cat]");
+  var active={};
+  function apply(){
+    var any=Object.keys(active).length>0,n=0;
+    cards.forEach(function(c){
+      var show=!any||active[c.dataset.cat];
+      c.hidden=!show;
+      if(show)c.style.setProperty("--i",Math.min(n++,4));   // restagger the slide-up
+    });
+  }
+  btns.forEach(function(b){
+    b.addEventListener("click",function(){
+      var f=b.dataset.filter;
+      if(active[f]){delete active[f]}else{active[f]=true}
+      b.setAttribute("aria-pressed",active[f]?"true":"false");
+      apply();
+    });
+  });
+})();
+</script>
+</body>
+</html>
